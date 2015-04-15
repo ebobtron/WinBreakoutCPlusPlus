@@ -12,7 +12,6 @@
 
 /**
 *   make the main window
-*
 ***********************************************/
 HWND createMainWin(HINSTANCE hThisInstance, int sizeX, int sizeY){
 
@@ -63,4 +62,41 @@ HWND createMainWin(HINSTANCE hThisInstance, int sizeX, int sizeY){
         return hwnd;
 
     return 0;
+}
+
+/*   paint text in window    */
+void paintText(HWND hwnd, LPCTSTR lpText){
+
+    /* to paint one must have the PAINTSTRUCT   */
+    PAINTSTRUCT ps;
+    /* get handle to device context */
+    HDC hdc = BeginPaint(hwnd, &ps);
+    /* write character string to location x, y   */
+    TextOut(hdc, 80, 10, lpText, lstrlen(lpText));
+    /* release the device context */
+    EndPaint(hwnd, &ps);
+}
+
+
+/*    refresh the window     */
+void refreshWindow(HWND hwnd, LPCTSTR lpOptionalText){
+
+    /* we need to deal with optional text */
+    LPCTSTR lpText[64];
+    lstrcpy((LPSTR)lpText, _T(" main window "));
+
+    if(lpOptionalText)
+        lstrcpy((LPSTR)lpText, lpOptionalText);
+
+    /* paint the text to the window*/
+    paintText(hwnd, (LPCTSTR)lpText);
+
+    /* some sample ball code at least it's a circle  */
+    HDC hdc = GetDC(hwnd);
+    Ellipse(hdc,
+            50,    // int nLeftRect
+            50,    // int nTopRect
+            100,   // int nRightRect
+            100);  // int nBottomRect
+    DeleteDC(hdc);
 }

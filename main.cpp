@@ -16,22 +16,20 @@ int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance,
 {
     MSG messages;  /* Here messages to the application are saved */
 
-    /**
-     *   create the main window width, height
-     ******************************/
+    /* create the main window - width, height */
     HWND hwnd = createMainWin(hThisInstance, 330, 500);
 
-    /** if main window handle invalid alert and quit  */
+    /* if main window handle invalid alert and quit  */
     if(!hwnd){
-        MessageBox(NULL, " can not create main window ",
-                         " WinBreakoutC++ ", MB_OK);
-        return 0;
+        MessageBox(NULL, _T(" can not create main window "),
+                         _T(" WinBreakoutC++ "), MB_OK);
+        PostQuitMessage(0);
     }
 
-    /** Make the window visible on the screen */
+    /* Make the window visible on the screen */
     ShowWindow (hwnd, nCmdShow);
 
-    /** Run the message loop. It will run until GetMessage() returns 0 */
+    /* Run the message loop. It will run until GetMessage() returns 0 */
     while (GetMessage (&messages, NULL, 0, 0))
     {
         /* Translate virtual-key messages into character messages */
@@ -40,7 +38,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance,
         DispatchMessage(&messages);
     }
 
-    /** The program return-value is 0 - The value that PostQuitMessage() gave */
+    /* The program return-value is 0 - The value that PostQuitMessage() gave */
     return messages.wParam;
 }
 
@@ -49,28 +47,16 @@ int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance,
 
 LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-
-// TODO (#1#): fix this
-
-    switch (message)                  /* handle the messages */
+    /* handle the messages */
+    switch (message)
     {
         case WM_DESTROY:
-            PostQuitMessage (0);       /* send a WM_QUIT to the message queue */
+            PostQuitMessage (0);    /* send a WM_QUIT to the message queue */
             break;
         case WM_PAINT:
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint (hwnd, &ps);
-            TextOut (hdc,
-                     // Location of the text
-                     80, // x
-                     40, // y
-                     // Text to print
-                     "this is the main window...",
-                     // Size of the text in characters
-                     23);
-            EndPaint (hwnd, &ps);
+            refreshWindow(hwnd);
             break;
-        default:                      /* for messages that we don't deal with */
+        default:      /* for messages that we don't deal with */
             return DefWindowProc (hwnd, message, wParam, lParam);
     }
 

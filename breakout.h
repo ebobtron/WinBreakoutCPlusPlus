@@ -18,9 +18,17 @@
 #include <windows.h>
 
 
-
-/*  Declare Windows procedure  */
+/*  Declare Windows procedure         */
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
 
+/*  Declare createMainWin() returns a window handle
+    winHandle = createMainWin(thisInstance, width, height)     */
+HWND createMainWin(HINSTANCE, int, int);
 
-HWND createMainWin(HINSTANCE hThisInstance, int sizeX, int sizeY);
+/*  Declare paintText()  returns void
+    paintText(window handle, text to paint)          */
+void paintText(HWND, LPCTSTR);
+
+/*  Declare refreshWindow() returns void
+    refreshWindow(main window handle, optional text or NULL  */
+void refreshWindow(HWND hwnd, LPCTSTR lpOptionalText = NULL);
