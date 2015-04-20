@@ -1,0 +1,14 @@
+19 April 2015
+   released version 1.0.2 of WinBreakoutCPlusPlus
+
+     Change log:
+        -Added: ball shape fills
+        -Added: ball motion
+        -New: paddle operations
+        -Added: paddle tracks mouse
+        -Added: sound
+        -Added: window side collision detection
+        -Added: paddle collision detection, (incomplete)
+        -Added: version resources
+        -Added: more better comments
+        -Added: this change log

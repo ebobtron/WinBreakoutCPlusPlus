@@ -1,5 +1,33 @@
 #include "resource.h"
-
+#include "version.h"
 
 
 IDI_MYICON ICON "icon.ico"
+IDW_MYBALLSOUND WAVE "resources\ball.wav"
+
+IDR_VERSION VERSIONINFO
+FILEVERSION RC_FILEVERSION
+PRODUCTVERSION RC_FILEVERSION
+FILEOS 0x00000004
+FILETYPE 0x00000001
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "FFFF0000"
+    BEGIN
+      VALUE "FileVersion", RC_FILEVERSION_STRING
+      VALUE "ProductVersion", RC_FILEVERSION_STRING
+      //VALUE "CompanyName", "...\0"
+      VALUE "FileDescription", "WinBreakoutC++ main executable\0"
+      VALUE "InternalName", "breakout\0"
+      VALUE "LegalCopyright", "(c) 2015 Robert Clark et al.\0"
+      VALUE "LegalTrademarks", ".......\0"
+      VALUE "OriginalFilename", "WinBreakoutC++\0"
+      VALUE "ProductName", "WinBreakoutCPlusPlus\0"
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0xFFFF, 0x0000
+  END
+END
