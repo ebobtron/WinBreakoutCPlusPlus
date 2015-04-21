@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <time.h>
-#include <math.h>
 #include <stdlib.h>
 /** write a function let us say, `randVlo(char s)` that takes an x or y as argument and returns the required numbers.
 *** {-6, -5, -4,-3, 3, 4, 5, 6}
