@@ -21,18 +21,18 @@
 #include <tchar.h>
 
 #include "resource.h"
+#include "person.h"
+
+
 
 /**   declare timer ID   **/
-const int ID_TIMER = 1;
+#define ID_TIMER 1
 
 /**   global rectangle structures               **/
 /**   for our window, ball, bricks and paddle   **/
 extern RECT mwinRect;
-extern RECT ballRect;
-extern RECT ballRectInvaild;
-extern RECT textRect;
-extern RECT paddleRectInvaild;
 
+/**   global POINTS structure to tack mouse position   **/
 extern POINTS mpoint_x;
 
 
@@ -43,9 +43,15 @@ LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
       winHandle = createMainWin(thisInstance, width, height)   **/
 HWND createMainWin(HINSTANCE, int, int);
 
-/**   paintText()  returns void
-      paintText(window handle, text to paint)    **/
-void paintText(HDC, LPCTSTR);
+/**   drawText()  returns void
+      drawText(window handle, text to paint)   **/
+void drawText(HDC, LPCTSTR, COLORREF color = NULL);
+
+/**   drawBall() returns void   **/
+void drawBall(HDC hdc, COLORREF pen = NULL, COLORREF color = NULL);
+
+/**   drawPaddle() returns void   **/
+void drawPaddle(HDC hdc, COLORREF pen = NULL, COLORREF fill = NULL);
 
 /**   refreshWindow() returns void
       refreshWindow(main window handle, optional text or NULL  **/
@@ -70,6 +76,12 @@ void createPaddle(int, int, int);
 /**   paddle tracks mouse using POINTS structure   **/
 void updatePaddle();
 
+/**   add rectangles to the window's update region   **/
+void setUpdateRegion(HWND);
+
+/****/
+void cleanUp();
+
 /**   structure for ball information size, position, speed   **/
 struct theBALL{
   int sizeDia;   // size diameter
@@ -79,6 +91,13 @@ struct theBALL{
   int vy;
 };
 
+
+/**   define some colors to use in the game   **/
+#define bO_RED RGB(255,0,0)
+#define bO_BLUE RGB(0,0,255)
+#define bO_GREEN RGB(0,255,0)
+#define bO_WHITE RGB(255,255,255)
+#define bO_BLACK RGB(1,1,1)    // because zero is zero
 
 
 

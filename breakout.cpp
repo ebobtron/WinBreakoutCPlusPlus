@@ -8,16 +8,22 @@
 *
 */
 
+/**   include our programs declarations   **/
 #include "breakout.h"
 
 /**   declare some global object variables   **/
-theBALL ballInfo;
+theBALL ballInfo;    // persistent ball information
 RECT mwinRect;    // main window rectangle
 RECT ballRect;    // ball rectangle
 RECT ballRectInvaild;    // ball rectangle for future and past positions
                          // needed to redraw only where needed
 RECT textRect;    // text rectangle
-RECT paddleRect;    // paddle rectangle
+
+/**   making paddleRect a pointer to heap memory     **/
+/**   is pointless but demonstrative                 **/
+/**   we get to use pointy -> syntax and will need   **/
+/**   free the memory                                **/
+RECT* paddleRect = (RECT*)malloc(sizeof(RECT));    // paddle rectangle
 RECT paddleRectInvaild;    // rectangle need to for paddle redraw
 
 POINTS mpoint_x;    // POINTS structure to relay mouse data to paddle
@@ -125,9 +131,9 @@ void createBall(int sizeDia, int x, int y){
     srand(GetTickCount());
 
     /**   provide some random kick to the ball velocity   **/
-    // TODO: this method can result in zero
-    ballInfo.vx = 2 + (int)(double)rand() / (RAND_MAX + 1) * (3 - -3) + -3;
-    ballInfo.vy = 4 + (int)(double)rand() / (RAND_MAX + 1) * (3 - -3) + -3;
+    // TODO: this can result in zero
+    ballInfo.vx = 4; //+ (double)rand() / (RAND_MAX + 1) * (3 - -3) + -3;
+    ballInfo.vy = 4; //+ (double)rand() / (RAND_MAX + 1) * (3 - -3) + -3;
 
     /**   play a starting sound / a natural pause   **/
     playSound(1);
@@ -140,23 +146,26 @@ void createPaddle(int posy, int length, int height){
     paddlelength = length;
 
     /**   load paddle rectangle  **/
-    paddleRect.left = mwinRect.right / 2 - length / 2;
-    paddleRect.top = posy;
-    paddleRect.right = paddleRect.left + length;
-    paddleRect.bottom = paddleRect.top + height;
+    paddleRect->left = mwinRect.right / 2 - length / 2;
+    paddleRect->top = posy;
+    paddleRect->right = paddleRect->left + length;
+    paddleRect->bottom = paddleRect->top + height;
 
     /**   load the paddle invalidate rectangle   **/
-    paddleRectInvaild = paddleRect;
+    paddleRectInvaild = *paddleRect;
     paddleRectInvaild.left = mwinRect.left;
     paddleRectInvaild.right = mwinRect.right;
+
 }
+
+
 
 /**   update paddle rectangle when ever mouse moves   **/
 void updatePaddle(){
 
       /**   alter paddle position from mouse position   **/
-      paddleRect.left = mpoint_x.x - paddlelength / 2;
-      paddleRect.right = paddleRect.left + paddlelength;
+      paddleRect->left = mpoint_x.x - paddlelength / 2;
+      paddleRect->right = paddleRect->left + paddlelength;
 }
 
 /****************************
@@ -253,42 +262,113 @@ void detectCollisions(HWND hwnd){
 
     //  TODO:  this is messy and not complete
     /**   detect paddle collisions   **/
-    if(ballRect.bottom > paddleRect.top){
+    if(ballRect.bottom > paddleRect->top){
 
-        if(paddleRect.left < ballRect.right &&
-                             paddleRect.right > ballRect.left){
+        if(paddleRect->left < ballRect.right &&
+                             paddleRect->right > ballRect.left){
 
             ballInfo.vy = -ballInfo.vy;
             playSound(1);
         }
     }
-
 }
 
-/**   paint text in window   **/
-void paintText(HDC hdc, LPCTSTR tsText){
+/**   draw text in window   **/
+void drawText(HDC hdc, LPCTSTR tsText, COLORREF color){
 
     /**   write character string to location x, y   **/
 
-    /* TODO: This code needs work, our exact needs for text display is
+    /* TODO: This code needs work, our exact needs for text display are
              not completely defined yet                                  */
     int width = 150;
     int height = 60;
 
-    /**   like everything we draw to the screen   **/
-    /**   create the text rectangle               **/
+    /**   like everything we draw to the screen     **/
+    /**   create the text rectangle for DrawTex()   **/
+    /**   you can do this without the rectangle     **/
+    /**   but only one line at a time               **/
     textRect.left = (mwinRect.right - width) / 2 ;
     textRect.top = 60;
     textRect.right = textRect.left + width;
     textRect.bottom = textRect.top + height;
 
+    COLORREF last = NULL;
+    if(color)
+        last = SetTextColor( hdc, color);
+
     /**   draw the text using rectangle   **/
     DrawTextEx(hdc, (LPSTR)tsText, _tcslen(tsText), &textRect, DT_CENTER, 0);
 
+    if(color)
+        SetTextColor(hdc, last);
+
 }
 
+void drawBall(HDC hdc, COLORREF pen, COLORREF fill){
 
-/**   refresh the window here we call all drawing functions   **/
+    /**   using the device context we can change              **/
+    /**   the color of pen and brush for the device context   **/
+    /**   changing before drawing the ball causes the ball    **/
+    /**   to change to red in this example                    **/
+
+    /**   Note: if you don't select on object, PEN, BRUSH     **/
+    /**         you can't change it                           **/
+
+    COLORREF lastpen = NULL;
+    COLORREF lastbrush =  NULL;
+    if(pen || fill){
+        SelectObject(hdc, GetStockObject(DC_PEN));
+        SelectObject(hdc, GetStockObject(DC_BRUSH));
+        lastpen = SetDCPenColor(hdc, pen);
+        lastbrush = SetDCBrushColor(hdc, fill);
+    }
+
+    Ellipse(hdc,
+            ballRect.left,     // int nLeftRect
+            ballRect.top,      // int nTopRect
+            ballRect.right,    // int nRightRect
+            ballRect.bottom);  // int nBottomRect
+
+    if(pen || fill){
+
+        SetDCPenColor(hdc, lastpen);
+        SetDCBrushColor(hdc, lastbrush);
+     }
+
+}
+
+void drawPaddle(HDC hdc, COLORREF pen, COLORREF fill){
+
+    COLORREF lastpen = NULL;
+    COLORREF lastbrush =  NULL;
+
+    if(pen || fill){
+        SelectObject(hdc, GetStockObject(DC_PEN));
+        SelectObject(hdc, GetStockObject(DC_BRUSH));
+        lastpen = SetDCPenColor(hdc, pen);
+        lastbrush = SetDCBrushColor(hdc, fill);
+    }
+
+    Rectangle(hdc,
+            paddleRect->left,     // int nLeftRect
+            paddleRect->top,      // int nTopRect
+            paddleRect->right,    // int nRightRect
+            paddleRect->bottom);  // int nBottomRect
+
+    if(pen || fill){
+        SetDCPenColor(hdc, lastpen);
+        SetDCBrushColor(hdc, lastbrush);
+     }
+}
+
+/**   add rectangles to our window's update region   **/
+void setUpdateRegion(HWND hwnd){
+    InvalidateRect(hwnd, &ballRectInvaild, TRUE);
+    InvalidateRect(hwnd, &textRect, TRUE);
+    InvalidateRect(hwnd, &paddleRectInvaild, TRUE);
+}
+
+/**   refresh the window, here we call all drawing functions   **/
 void refreshWindow(HWND hwnd, LPCTSTR lpOptionalText){
 
     /**   we need to deal with optional text           **/
@@ -304,12 +384,12 @@ void refreshWindow(HWND hwnd, LPCTSTR lpOptionalText){
               "ball position",
               ballRect.left, ballRect.top, mpoint_x.x);
 
-    /**   if calling function sends text, us it   **/
+    /**   if calling function sends text, use it   **/
     if(lpOptionalText)
         lstrcpy((LPSTR)tcText, lpOptionalText);
 
     /**   declare the paint structure object variable   **/
-    /**   needed by the device context                    **/
+    /**   needed by the device context                  **/
     PAINTSTRUCT ps;
 
     /**   get the handle of the device context for our window needed   **/
@@ -321,50 +401,32 @@ void refreshWindow(HWND hwnd, LPCTSTR lpOptionalText){
     *   DRAW PADDLE   *
     *                 *
     *******************/
-    Rectangle(hdc,
-              paddleRect.left,
-              paddleRect.top,
-              paddleRect.right,
-              paddleRect.bottom);
-
+    drawPaddle(hdc, bO_BLACK, bO_RED);   //&paddleRect,
 
    /**********************************
     *                                *
-    *    PAINT TEXT TO THE WINDOW    *
+    *    DRAW TEXT TO THE WINDOW     *
     *                                *
     **********************************/
-    paintText(hdc, (LPCTSTR)tcText);
-
-
-    /**   using the device context we can change              **/
-    /**   the color of pen and brush for the device context   **/
-    /**   changing before drawing the ball causes the ball    **/
-    /**   to change to red in this example                    **/
-
-    /**   Note: if you don't select on object, PEN, BRUSH   **/
-    /**         you can't change it                         **/
-    SelectObject(hdc, GetStockObject(DC_PEN));
-    SetDCPenColor(hdc, RGB(255, 0, 0));
-
-    SelectObject(hdc, GetStockObject(DC_BRUSH));
-    SetDCBrushColor(hdc, RGB(255, 0, 0));
+    drawText(hdc, (LPCTSTR)tcText, 0);    // color 0 default
 
    /*********************
     *                   *
     *   DRAW THE BALL   *
     *                   *
     *********************/
-
-    Ellipse(hdc,
-            ballRect.left,     // int nLeftRect
-            ballRect.top,      // int nTopRect
-            ballRect.right,    // int nRightRect
-            ballRect.bottom);  // int nBottomRect
-
+    drawBall(hdc, NULL, bO_RED);    // draw a black ball
 
     /**   much like free we use end paint to return        **/
     /**   the device context to the system.  if we         **/
     /**   don't release the DC the resource will be lost   **/
     /**   as a memory leak                                 **/
     EndPaint(hwnd, &ps);
+}
+
+void cleanUp(){
+
+    if(paddleRect)
+        free(paddleRect);
+
 }
