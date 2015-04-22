@@ -1,13 +1,15 @@
 #include <stdio.h>
 #include <time.h>
-#include <stdlib.h>
+#include <stdlib.h>y
+/*** A method by Faïza Harbi , CS50x session 2014 ***/
+
 /** write a function let us say, `randVlo(char s)` that takes an x or y as argument and returns the required numbers.
 *** {-6, -5, -4,-3, 3, 4, 5, 6}
 ***where x would be in the list above and y the positives from the list only
 **/
  
 /*based on reading the char x or y other excluded , read the char, if x use the if x part else the y part*/
-int randVlo(char v)
+int randVel(char v)
 {
     const int range_arr[8] = {-6, -5, -4,-3, 3, 4, 5, 6};  
     srand(time(NULL));
