@@ -1,10 +1,11 @@
-#include <stdio.h>
-#include <time.h>
-#include <stdlib.h>
 
-/** prototypes **/
+#include <windows.h>
 
-/** takes either the x velocity or the y velocity and return randomly an integer from a const array of ints which is x
-***  or returns randomly only positive integers from the array of int as y
-**/
+/**  prototypes by Faïza Harbi
+
+/**   takes either the an "x" or a "y" argument and returns
+      randomly an integer from a const array of ints which will
+      be the speed for the x axis of movement or returns
+      randomly only positive integers from the array of ints as
+      the y axis speed                                                   **/
 int randVlo(char v);

@@ -127,13 +127,12 @@ void createBall(int sizeDia, int x, int y){
     ballInfo.x = ballRect.left;
     ballInfo.y = ballRect.top;
 
-    /**   seed random number gen   **/
     srand(GetTickCount());
 
-    /**   provide some random kick to the ball velocity   **/
+    /**   provide a random values to the ball velocity   **/
     // TODO: this can result in zero
-    ballInfo.vx = 4; //+ (double)rand() / (RAND_MAX + 1) * (3 - -3) + -3;
-    ballInfo.vy = 4; //+ (double)rand() / (RAND_MAX + 1) * (3 - -3) + -3;
+    ballInfo.vx = randVlo('x');
+    ballInfo.vy = randVlo('y');
 
     /**   play a starting sound / a natural pause   **/
     playSound(1);
