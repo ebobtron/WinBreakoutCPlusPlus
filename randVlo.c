@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <time.h>
-#include <stdlib.h>y
+#include <stdlib.h>
 /*** A method by Faïza Harbi , CS50x session 2014 ***/
 
 /** write a function let us say, `randVlo(char s)` that takes an x or y as argument and returns the required numbers.
