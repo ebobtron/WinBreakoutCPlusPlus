@@ -7,13 +7,14 @@
         -Removed: extern RECT textRect; declaration from breakout.h
         -Removed: extern RECT paddleRectInvaild; declaration from breakout.h
         -Added: void setUpdateRegion(HWND hwnd) to breakout.cpp to make the above rectangles unnessary beyond breakout.cpp
-        -Updated: main.cpp now fully commented 
+        -Updated: main.cpp now fully commented
         -Changed: paintText() in breakout.cpp to drawText()
         -Added: COLORREF argument to drawText() default NULL system text color
-        -Added: game color definitions to breakout.h bo_RED, bo_BLUE, bo_GREEN, bo_WHITE, bo_BLACK
+        -Added: game color definitions to breakout.h bO_RED, bO_BLUE, bO_GREEN, bO_WHITE, bO_BLACK
         -Added: drawBall() to breakout.cpp and moved pen and brush color selection to drawBall() argument three
         -Changed: RECT paddleRect to a pointer on the heap
         -Added: cleanUp() to free heap memory when the program closes
+        -Added: randVlo() by Faiza Harbi our random starting ball speed engine
 
 19 April 2015
    released version 1.0.2 of WinBreakoutCPlusPlus

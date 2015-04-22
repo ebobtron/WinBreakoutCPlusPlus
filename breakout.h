@@ -21,7 +21,7 @@
 #include <tchar.h>
 
 #include "resource.h"
-#include "person.h"
+#include "faiza.h"
 
 
 
