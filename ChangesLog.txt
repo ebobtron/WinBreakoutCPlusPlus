@@ -1,3 +1,11 @@
+25 April 2015
+   released version 1.0.2 of WinBreakoutCPlusPlus
+
+     Change log:
+        -Added: added a console to debug build target in WinMain() we
+                can use printf or cout to track values
+        -Added: experimental brick code
+
 22 April 2015
    released version 1.0.2 of WinBreakoutCPlusPlus
 

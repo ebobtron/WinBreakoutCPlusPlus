@@ -46,6 +46,7 @@ int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE hPrevInstance,
         MessageBox(NULL, _T(" can not create console window "),
                          _T(" WinBreakoutC++ "), MB_OK);
     }
+    // TODO: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead.
     freopen("CONOUT$","wb",stdout);  // reopen stout handle as console window output
 #endif
 

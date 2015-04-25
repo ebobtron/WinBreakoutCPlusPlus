@@ -1,0 +1,76 @@
+# depslib dependency file v1.0
+1429160202 source:c:\documents and settings\hp_administrator\my documents\programming projects\winbreakoutcplusplus\main.cpp
+	"breakout.h"
+	"resource.h"
+
+1429164365 c:\documents and settings\hp_administrator\my documents\programming projects\winbreakoutcplusplus\breakout.h
+	<windows.h>
+	<stdio.h>
+	<tchar.h>
+	"version.h"
+
+1428820407 c:\documents and settings\hp_administrator\my documents\programming projects\winbreakoutcplusplus\resource.h
+
+1428819966 source:c:\documents and settings\hp_administrator\my documents\programming projects\winbreakoutcplusplus\resource.rc
+	"resource.h"
+
+1429160948 source:c:\documents and settings\hp_administrator\my documents\programming projects\winbreakoutcplusplus\breakout.cpp
+	"breakout.h"
+
+1429164102 c:\documents and settings\hp_administrator\my documents\programming projects\winbreakoutcplusplus\version.h
+
+1429249610 source:c:\documents and settings\hp_administrator\my documents\programmingprojects\winbreakoutcplusplus\breakout.cpp
+	"breakout.h"
+
+1429242158 c:\documents and settings\hp_administrator\my documents\programmingprojects\winbreakoutcplusplus\breakout.h
+	<windows.h>
+	<stdio.h>
+	<tchar.h>
+	"version.h"
+
+1429164102 c:\documents and settings\hp_administrator\my documents\programmingprojects\winbreakoutcplusplus\version.h
+
+1429249315 source:c:\documents and settings\hp_administrator\my documents\programmingprojects\winbreakoutcplusplus\main.cpp
+	"breakout.h"
+	"resource.h"
+
+1428820407 c:\documents and settings\hp_administrator\my documents\programmingprojects\winbreakoutcplusplus\resource.h
+
+1428819966 source:c:\documents and settings\hp_administrator\my documents\programmingprojects\winbreakoutcplusplus\resource.rc
+	"resource.h"
+
+1429985861 source:c:\programmingprojects\winbreakoutcplusplus\breakout.cpp
+	"breakout.h"
+	<iostream>
+
+1429938499 c:\programmingprojects\winbreakoutcplusplus\breakout.h
+	<windows.h>
+	<stdio.h>
+	<tchar.h>
+	"resource.h"
+	"faiza.h"
+
+1429427637 c:\programmingprojects\winbreakoutcplusplus\version.h
+
+1429990032 source:c:\programmingprojects\winbreakoutcplusplus\main.cpp
+	"breakout.h"
+
+1429427401 c:\programmingprojects\winbreakoutcplusplus\resource.h
+	"version.h"
+
+1429427692 source:c:\programmingprojects\winbreakoutcplusplus\resource.rc
+	"resource.h"
+	"version.h"
+
+1429670202 c:\programmingprojects\winbreakoutcplusplus\person.h
+	<windows.h>
+
+1429668953 source:c:\programmingprojects\winbreakoutcplusplus\person.cpp
+	"person.h"
+
+1429735515 c:\programmingprojects\winbreakoutcplusplus\faiza.h
+	<windows.h>
+
+1429760624 source:c:\programmingprojects\winbreakoutcplusplus\faiza.cpp
+	"faiza.h"
+
