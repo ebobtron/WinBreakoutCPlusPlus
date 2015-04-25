@@ -15,10 +15,14 @@
 #endif
 
 // #define _WIN32_WINNT 0x0500
+//A inclure obligatoirement pour pouvoir compiler en utilisant le playsound
+// Compulsory include to be able to compile using playsound 
+#pragma comment(lib, "winmm.lib")
 
 #include <windows.h>
 #include <stdio.h>
 #include <tchar.h>
+//#include <mmsystem.h> // not needed for PlaySound because of the use of pragma 4 lines above
 
 #include "resource.h"
 #include "faiza.h"
@@ -78,6 +82,8 @@ void updatePaddle();
 
 /**   add rectangles to the window's update region   **/
 void setUpdateRegion(HWND);
+
+void playSound(int);
 
 /****/
 void cleanUp();
