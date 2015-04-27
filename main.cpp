@@ -38,16 +38,21 @@ int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE hPrevInstance,
     /**   make the window visible on the screen   **/
     ShowWindow(hwnd, nCmdShow);
 
-/**   some debugging code   **/
-/**   with the following statements a Debug build target
-      allows us to use printf and cout to display data     **/
+/**   some debugging code                                                             **/
+/**   with the following statements a debug build target will open a console window   **/
+/**   allowing us to use printf and cout to display data                              **/
+/**   NOTE: to use 'cout' iostream.h and static library libcmtd.lib must              **/
+/**         be linked to your code                                                    **/
 #ifdef _DEBUG
+
     if(!AllocConsole()){
         MessageBox(NULL, _T(" can not create console window "),
                          _T(" WinBreakoutC++ "), MB_OK);
     }
-    // TODO: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead.
-    freopen("CONOUT$","wb",stdout);  // reopen stout handle as console window output
+
+    FILE* np; // null file pointer for freopen_s secure
+    freopen_s(&np, "CONOUT$", "wb", stdout);  // reopen stout handle as console window output
+
 #endif
 
     /**   get our windows rectangle so we can size things   **/
@@ -73,13 +78,13 @@ int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE hPrevInstance,
 
     /**   run the message loop                        **/
     /**   It will run until GetMessage() returns 0.   **/
-    /**   argument two is null we are listening to    **/
-    /**   the thread not the window.  we get all      **/
-    /**   messages.  this loop is the heart of our    **/
-    /**   program pumping messages not blood          **/
+    /**   argument two is null, we are listening to   **/
+    /**   the thread not the window.  We get all      **/
+    /**   messages.  This loop is the heart of our    **/
+    /**   program pumping messages not blood,         **/
 
-    /**   messages is MSG structure that windows passes       **/
-    /**   messages to our program defined in top of WinMain   **/
+    /**   "messages" is a MSG structure where messages are placed by     **/
+    /**   GetMessage, defined at the top of WinMain                      **/
     while(GetMessage(&messages, NULL, 0, 0))
     {
         /**   Translate virtual-key messages into character messages   **/
