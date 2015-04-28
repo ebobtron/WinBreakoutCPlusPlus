@@ -1,3 +1,12 @@
+28 April 2015
+   released version 1.0.3 of WinBreakoutCPlusPlus
+
+     Change log:
+        -Changed: debug code "freopen"  to ""freopen_s" for security reasons
+        -Added: a pause to the game press p to pause and p to unpause
+        -Added: Game colors yellow, orange, light gray
+        -Added: rows of colored bricks
+
 25 April 2015
    released version 1.0.2 of WinBreakoutCPlusPlus
 

@@ -22,7 +22,7 @@ RECT ballRectInvaild;    // ball rectangle for future and past positions
 RECT textRect;    // text rectangle
 
 /**   the brink array   **/
-tHEBRICK infobrick[50];    // 50 bricks
+tHEBRICK infobrick[BRICKS];    // number of bricks
 
 
 /**   making paddleRect a pointer to heap memory     **/
@@ -34,13 +34,14 @@ RECT paddleRectInvaild;    // rectangle need to for paddle redraw
 
 POINTS mpoint_x;    // POINTS structure to relay mouse data to paddle
 
-
-
-
 /**   need to keep track of paddle length beyond it's creation   **/
 /**   maybe a paddle info structure like ball, but for now       **/
 int paddlelength = 0;
 
+struct{
+  bool paused;
+  bool end;
+} status;
 
 /**   make the main window   **/
 HWND createMainWin(HINSTANCE hThisInstance, int sizeX, int sizeY){
@@ -134,10 +135,10 @@ void createBall(int sizeDia, int x, int y){
     ballInfo.x = ballRect.left;
     ballInfo.y = ballRect.top;
 
+    /**   seed random number generator   **/
     srand(GetTickCount());
 
-    /**   provide a random values to the ball velocity   **/
-    // TODO: this can result in zero
+    /**   provide random values to the ball velocity   **/
     ballInfo.vx = randVlo('x');
     ballInfo.vy = randVlo('y');
 
@@ -182,13 +183,38 @@ tHEBRICK createBrick(int x, int y, int length, int height,
 /**  make the brick wall   **/
 void createWall(int x){
 
-    infobrick[0] = createBrick( 10, 10, 30, 10, bO_DDGRAY, bO_RED);
+    COLORREF color[] = {bO_BLUE, bO_ORANGE, bO_YELLOW, bO_RED, bO_GREEN};
+
+    int length = mwinRect.right / 10 -1;
+    int offset_x = (mwinRect.right - length * 10) / 2;
+    int offset_y = 40;
+    int height = 12;
+
+    int w_x = 0;
+    int w_y = 0;
+
+    int row = -1;
+
+    for(int i = 0; i < BRICKS; i++){
+
+        if(i % 10 == 0){
+            row++;
+        }
+
+        w_x = offset_x + (length * (i % 10)) ;
+        w_y = offset_y + height * row;
+
+        infobrick[i] =
+            createBrick(w_x, w_y+2, length-2, height-2, 0, color[row]);
+
+    }
 }
 
 
 /**   update paddle rectangle when ever mouse moves   **/
 void updatePaddle(){
-
+      if(status.paused)
+          return;
       /**   alter paddle position from mouse position   **/
       paddleRect->left = mpoint_x.x - paddlelength / 2;
       paddleRect->right = paddleRect->left + paddlelength;
@@ -213,7 +239,8 @@ void updateGame(HWND hwnd){
     OffsetRect(&ballRect, ballInfo.vx, ballInfo.vy);
 
 #ifdef _DEBUG
-    printf("x = %d  y = %d\n", ballRect.left, ballRect.right);
+    printf("pf x = %d  y = %d\n", ballRect.left, ballRect.top);
+    //std::cout << "c  " << "x= " << ballRect.left << "  y = " << ballRect.top << "\n";
 #endif
 
     /**   copy new ball rectangle   **/
@@ -369,6 +396,7 @@ void drawBall(HDC hdc, COLORREF pen, COLORREF fill){
 
 void drawPaddle(HDC hdc, COLORREF pen, COLORREF fill){
 
+
     COLORREF lastpen = NULL;
     COLORREF lastbrush =  NULL;
 
@@ -398,16 +426,18 @@ void drawWall(HDC hdc){
 
     SelectObject(hdc, GetStockObject(DC_PEN));
     SelectObject(hdc, GetStockObject(DC_BRUSH));
-    lastpen = SetDCPenColor(hdc, infobrick[0].pen);
-    lastbrush = SetDCBrushColor(hdc, infobrick[0].brush);
+
+    for(int i = 0; i < BRICKS; i++){
+    lastpen = SetDCPenColor(hdc, infobrick[i].pen);
+    lastbrush = SetDCBrushColor(hdc, infobrick[i].brush);
 
 
-    Rectangle(hdc,
-            infobrick[0].rcBrick.left,      // int nLeftRect
-            infobrick[0].rcBrick.top,       // int nTopRect
-            infobrick[0].rcBrick.right,     // int nRightRect
-            infobrick[0].rcBrick.bottom);   // int nBottomRect
-
+        Rectangle(hdc,
+            infobrick[i].rcBrick.left,      // int nLeftRect
+            infobrick[i].rcBrick.top,       // int nTopRect
+            infobrick[i].rcBrick.right,     // int nRightRect
+            infobrick[i].rcBrick.bottom);   // int nBottomRect
+    }
     SetDCPenColor(hdc, lastpen);
     SetDCBrushColor(hdc, lastbrush);
 
@@ -425,7 +455,7 @@ void refreshWindow(HWND hwnd, LPCTSTR lpOptionalText){
 
     /**   we need to deal with optional text           **/
     /**   calling function can omit the text           **/
-    /**   this is demonstrative at this point           **/
+    /**   this is demonstrative at this point          **/
 
     /**   declare a wide CHAR buffer for the Unicode crowd   **/
     /**   for some one you this is a string                  **/
@@ -480,6 +510,25 @@ void refreshWindow(HWND hwnd, LPCTSTR lpOptionalText){
     /**   as a memory leak                                 **/
     EndPaint(hwnd, &ps);
 }
+
+/**   handle character key presses like 'p' for pause and other   **/
+void charKeyPress(HWND hwnd, WPARAM key){
+
+    if(key == pause){
+        if(status.paused){
+            SetTimer(hwnd, ID_TIMER, 20, 0);
+
+            status.paused = false;
+        }
+        else{
+           KillTimer(hwnd, ID_TIMER);
+           status.paused = true;
+        }
+    }
+}
+
+
+
 
 void cleanUp(){
 

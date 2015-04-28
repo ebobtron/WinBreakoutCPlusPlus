@@ -41,7 +41,7 @@ int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE hPrevInstance,
 /**   some debugging code                                                             **/
 /**   with the following statements a debug build target will open a console window   **/
 /**   allowing us to use printf and cout to display data                              **/
-/**   NOTE: to use 'cout' iostream.h and static library libcmtd.lib must              **/
+/**   NOTE: to use 'cout' iostream.h and static library libcmtd.lib must
 /**         be linked to your code                                                    **/
 #ifdef _DEBUG
 
@@ -50,8 +50,9 @@ int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE hPrevInstance,
                          _T(" WinBreakoutC++ "), MB_OK);
     }
 
-    FILE* np; // null file pointer for freopen_s secure
-    freopen_s(&np, "CONOUT$", "wb", stdout);  // reopen stout handle as console window output
+    FILE* cp; // console file pointer
+    freopen_s(&cp, "CONOUT$", "wb", stdout);  // reassign stout handle to console windows
+                                              // file p output
 
 #endif
 
@@ -120,6 +121,9 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message,
         case WM_MOUSEMOVE:    // whenever the mouse moves over our window
             mpoint_x = MAKEPOINTS(lParam);    // store mouse position
             updatePaddle();    // update paddle rectangle immediately
+            break;
+        case WM_CHAR:
+            charKeyPress(hwnd, wParam);  // pause start program control
             break;
         case WM_DESTROY:    // this turns off our program
             cleanUp();

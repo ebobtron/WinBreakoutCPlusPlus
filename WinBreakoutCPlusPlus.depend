@@ -39,20 +39,20 @@
 1428819966 source:c:\documents and settings\hp_administrator\my documents\programmingprojects\winbreakoutcplusplus\resource.rc
 	"resource.h"
 
-1429985861 source:c:\programmingprojects\winbreakoutcplusplus\breakout.cpp
+1430201388 source:c:\programmingprojects\winbreakoutcplusplus\breakout.cpp
 	"breakout.h"
 	<iostream>
 
-1429938499 c:\programmingprojects\winbreakoutcplusplus\breakout.h
+1430198066 c:\programmingprojects\winbreakoutcplusplus\breakout.h
 	<windows.h>
 	<stdio.h>
 	<tchar.h>
 	"resource.h"
 	"faiza.h"
 
-1429427637 c:\programmingprojects\winbreakoutcplusplus\version.h
+1430198977 c:\programmingprojects\winbreakoutcplusplus\version.h
 
-1429990032 source:c:\programmingprojects\winbreakoutcplusplus\main.cpp
+1430190349 source:c:\programmingprojects\winbreakoutcplusplus\main.cpp
 	"breakout.h"
 
 1429427401 c:\programmingprojects\winbreakoutcplusplus\resource.h

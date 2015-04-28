@@ -12,11 +12,13 @@
 				<Option type="0" />
 				<Option compiler="msvc10" />
 				<Compiler>
+					<Add option="/W4" />
 					<Add option="/Zi" />
 					<Add option="/D_DEBUG" />
 				</Compiler>
 				<Linker>
 					<Add option="/DEBUG" />
+					<Add library="libcpmtd" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -33,6 +35,7 @@
 		<Compiler>
 			<Add option="/EHc" />
 			<Add option="/EHs" />
+			<Add option="/W3" />
 			<Add directory="$(#psdk.include)" />
 		</Compiler>
 		<Linker>
