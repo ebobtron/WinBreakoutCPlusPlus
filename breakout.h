@@ -16,8 +16,6 @@
 
 // #define _WIN32_WINNT 0x0500
 
-
-
 #include <windows.h>
 #include <stdio.h>
 #include <tchar.h>
@@ -25,11 +23,14 @@
 #include "resource.h"
 #include "faiza.h"
 
-/**   declare timer ID constant   **/
+/**   declare timer ID constants   **/
 #define ID_TIMER 1
+#define ID_TIMER2 2
 
 /**   define number brick in the wall   **/
 #define BRICKS 50
+
+#define LIVES 3
 
 /**   global rectangle structures               **/
 /**   for our window, ball, bricks and paddle   **/
@@ -54,22 +55,29 @@ struct tHEBRICK{
   COLORREF brush;
 };
 
-/**    windows procedure   **/
+/**   FUNCTION PROTOTYPES
+/**********************************************/
+
+/**    windows procedure   prototyped here so createMainWin can see it.  **/
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
 
 /**   createMainWin() returns a window handle
       winHandle = createMainWin(thisInstance, width, height)   **/
 HWND createMainWin(HINSTANCE, int, int);
 
+/**   createBall() returns void
+      createBall(ball size, position x, position y)   **/
+void createBall(int size = NULL, int x = NULL, int y = NULL);
+
 /**   drawText()  returns void
       drawText(window handle, text to paint)   **/
 void drawText(HDC, LPCTSTR, COLORREF color = NULL);
 
 /**   drawBall() returns void   **/
-void drawBall(HDC hdc, COLORREF pen = NULL, COLORREF color = NULL);
+void drawBall(HDC hdc, COLORREF pen = NULL, COLORREF brush = NULL);
 
 /**   drawPaddle() returns void   **/
-void drawPaddle(HDC hdc, COLORREF pen = NULL, COLORREF fill = NULL);
+void drawPaddle(HDC hdc, COLORREF pen = NULL, COLORREF brush = NULL);
 
 /**   refreshWindow() returns void
       refreshWindow(main window handle, optional text or NULL  **/
@@ -107,8 +115,22 @@ void createWall(int x);
 /**   handle character key presses like 'p' for pause and other   **/
 void charKeyPress(HWND, WPARAM);
 
-/****/
-void cleanUp();
+/**   when the windows size changes   **/
+void winSizeChange(HWND hwnd);
+
+/**   we have to determine where the ball will be and where it was
+      in order to redraw the ball correctly                           **/
+void setBallTravelRegion(void);
+
+/**   this allows us to delay next ball launch without killing out first timer   **/
+bool delayBall(HWND hwnd = NULL);
+
+/**   free memory and the like shut the program down   **/
+void cleanUp(HWND);
+
+
+/**   PROGRAM CONSTANTS
+/***************************************/
 
 /**   define some color constants for use in the game   **/
 #define bO_RED RGB(255, 0, 0)    // 0x000000ff
@@ -119,7 +141,7 @@ void cleanUp();
 #define bO_WHITE RGB(255, 255, 255)    // 0x00ffffff
 #define bO_LGRAY RGB(211, 211, 211)
 #define bO_DDGRAY RGB(50, 50, 50)
-/*   TODO this is a bad solution to fix code that tests of the presence of a color,
+/*   TODO: this is a bad solution to fix code that tests for the presence of a color,
           function tests for a NULL and RGB(0,0,0) is 0 NULL
           yet default brush is white, dumb   */
 #define bO_BLACK RGB(1, 1, 1)    // because zero is zero
@@ -127,4 +149,5 @@ void cleanUp();
 
 /**   define some control constants   **/
 #define pause 'p'
+#define start 's'
 

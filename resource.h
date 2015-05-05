@@ -12,6 +12,7 @@
 #define ID_STUFF_GO     9002
 
 #define IDW_MYBALLSOUND 2000
+#define IDW_MYBUZSOUND 2001
 #define IDR_VERSION 1
 
 #endif // __RESOURCE_H_INCLUDED__

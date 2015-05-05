@@ -18,7 +18,8 @@
 				</Compiler>
 				<Linker>
 					<Add option="/DEBUG" />
-					<Add library="libcpmtd" />
+					<Add option="/NODEFAULTLIB:libcmt.lib" />
+					<Add library="libcmtd" />
 				</Linker>
 			</Target>
 			<Target title="Release">

@@ -15,6 +15,20 @@
 int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE hPrevInstance,
                     LPSTR lpszArgument, int nCmdShow)
 {
+    /**   this should always be NULL always   **/
+    if(hPrevInstance){
+       MessageBox(NULL, _T("there should be no previous instance data")
+                      , _T("WinBreakoutC++"), MB_ICONSTOP|MB_OK);
+       return 0;
+    }
+
+    /**   WinBreakoutc++ doesn't take command line arguments   **/
+    if(lpszArgument[0]){
+        MessageBox(NULL, _T("WinBreakoutC++ don't use command line arguments")
+                      , _T("WinBreakoutC++"), MB_OK);
+    }
+    //
+
     /**   here messages to the application are saved   **/
     MSG messages;
 
@@ -43,18 +57,16 @@ int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE hPrevInstance,
 /**   allowing us to use printf and cout to display data                              **/
 /**   NOTE: to use 'cout' iostream.h and static library libcmtd.lib must
 /**         be linked to your code                                                    **/
-#ifdef _DEBUG
 
+ #ifdef _DEBUG
     if(!AllocConsole()){
         MessageBox(NULL, _T(" can not create console window "),
                          _T(" WinBreakoutC++ "), MB_OK);
     }
-
-    FILE* cp; // console file pointer
+    FILE* cp; // console file or stream pointer
     freopen_s(&cp, "CONOUT$", "wb", stdout);  // reassign stout handle to console windows
-                                              // file p output
-
-#endif
+                                              // output file pointer / stream
+#endif // _DEBUG
 
     /**   get our windows rectangle so we can size things   **/
     GetClientRect(hwnd, &mwinRect);
@@ -69,8 +81,7 @@ int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE hPrevInstance,
     *   make the paddle              *
     *   y position, length, height   *
     **********************************/
-    // TODO:  this needs to be from top with a re-sizable window
-    createPaddle(mwinRect.bottom - 60, 40, 10);
+    createPaddle(int(mwinRect.bottom *.8), 40, 10);
 
    /***************************
     *   make the brick wall   *
@@ -86,6 +97,7 @@ int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE hPrevInstance,
 
     /**   "messages" is a MSG structure where messages are placed by     **/
     /**   GetMessage, defined at the top of WinMain                      **/
+
     while(GetMessage(&messages, NULL, 0, 0))
     {
         /**   Translate virtual-key messages into character messages   **/
@@ -101,37 +113,55 @@ int WINAPI WinMain(HINSTANCE hThisInstance, HINSTANCE hPrevInstance,
     return messages.wParam;
 }
 
-/**   this function is called by the Windows function         **/
-/**   DispatchMessage() inside the the main loop in WinMain   **/
-
+/**   this function is called by the Windows function                    **/
+/**   DispatchMessage() from inside the main message loop of WinMain     **/
 LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT message,
                                  WPARAM wParam, LPARAM lParam)
 {
     /**   process system messages   **/
-    switch (message)
-    {
-        case WM_TIMER:    // message from timer "ID_TIMER"
-            setUpdateRegion(hwnd);    // add rectangle to update region
-            updateGame(hwnd);    // do the game math update all rectangles
-            UpdateWindow(hwnd);    // send WM_PAINT if update region is not empty
+    switch (message){
+        /**   message from any timer we set "ID_TIMER" and "ID_TIMER2"    */
+        case WM_TIMER:
+            switch(wParam){
+                case ID_TIMER:     //  the main game timer
+                     setUpdateRegion(hwnd);    // add rectangle to update region
+                     updateGame(hwnd);    // do the game math update all rectangles
+                     UpdateWindow(hwnd);    // send WM_PAINT if update region is not empty
+                    break;
+                case ID_TIMER2:    // ball delay timer
+                     delayBall(hwnd);
+                      // restart ball
+                    break;
+                default:;
+            }
             break;
+        /**   when our window is created            */
         case WM_CREATE:
-            SetTimer(hwnd, ID_TIMER, 20, 0);    // set timer running
+             SetTimer(hwnd, ID_TIMER, 20, 0);    // set timer running
             break;
-        case WM_MOUSEMOVE:    // whenever the mouse moves over our window
-            mpoint_x = MAKEPOINTS(lParam);    // store mouse position
-            updatePaddle();    // update paddle rectangle immediately
+        /** whenever the mouse moves over our window    **/
+        case WM_MOUSEMOVE:
+             mpoint_x = MAKEPOINTS(lParam);    // store mouse position
+             updatePaddle();    // update paddle rectangle immediately
             break;
+        /**   whenever a character key is pressed       */
         case WM_CHAR:
-            charKeyPress(hwnd, wParam);  // pause start program control
+             charKeyPress(hwnd, wParam);  // pause start program control
+            break;
+        /**   if the window is resized     **/
+        case WM_SIZE:
+             winSizeChange(hwnd);
+            break;
+        /**   when a request to close come from a user   **/
+        case WM_CLOSE:
+             cleanUp(hwnd);
             break;
         case WM_DESTROY:    // this turns off our program
-            cleanUp();
-            PostQuitMessage(0);    // send a WM_QUIT a 0 to the message queue
+             PostQuitMessage(0);    // send a WM_QUIT a 0 to the message queue
             break;
         /**   whenever some part of a window needs updating   **/
         case WM_PAINT:    // the system message to paint the update region
-            refreshWindow(hwnd);    // paint all rectangles to update region
+             refreshWindow(hwnd);    // paint all rectangles to update region
             break;
         default:      // for messages that we don't deal with
             return DefWindowProc(hwnd, message, wParam, lParam);
