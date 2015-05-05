@@ -1,3 +1,16 @@
+05 May 2015
+   released version 1.0.4 of WinBreakoutCPlusPlus
+
+     Change log:
+        The game can now be played.
+        -Added: buzzer.wav a sound to start the game
+        -Added: handling for formal parameters "hPrevInstance" and "lpszArgument"  stops compiler warnings
+        -Added: WM_TIMER message handling for second timer ID_TIMER2  delay ball restart timer
+        -Added: cleanUp function to shutdown program
+        -Added: start new game key   press " s "
+        -Added: Bricks and lives remaining count to window title bar and main window client area
+        -Added: ball lost detection off the button of window
+
 28 April 2015
    released version 1.0.3 of WinBreakoutCPlusPlus
 

@@ -39,11 +39,11 @@
 1428819966 source:c:\documents and settings\hp_administrator\my documents\programmingprojects\winbreakoutcplusplus\resource.rc
 	"resource.h"
 
-1430201388 source:c:\programmingprojects\winbreakoutcplusplus\breakout.cpp
+1430849219 source:c:\programmingprojects\winbreakoutcplusplus\breakout.cpp
 	"breakout.h"
 	<iostream>
 
-1430198066 c:\programmingprojects\winbreakoutcplusplus\breakout.h
+1430856184 c:\programmingprojects\winbreakoutcplusplus\breakout.h
 	<windows.h>
 	<stdio.h>
 	<tchar.h>
@@ -52,13 +52,13 @@
 
 1430198977 c:\programmingprojects\winbreakoutcplusplus\version.h
 
-1430190349 source:c:\programmingprojects\winbreakoutcplusplus\main.cpp
+1430523291 source:c:\programmingprojects\winbreakoutcplusplus\main.cpp
 	"breakout.h"
 
-1429427401 c:\programmingprojects\winbreakoutcplusplus\resource.h
+1430246931 c:\programmingprojects\winbreakoutcplusplus\resource.h
 	"version.h"
 
-1429427692 source:c:\programmingprojects\winbreakoutcplusplus\resource.rc
+1430247010 source:c:\programmingprojects\winbreakoutcplusplus\resource.rc
 	"resource.h"
 	"version.h"
 
